@@ -1,6 +1,7 @@
 package pagerduty
 
 import "net/http"
+import "reflect"
 
 // IncidentsService type
 type IncidentsService struct {
@@ -76,4 +77,26 @@ func (s *IncidentsService) List(opt *IncidentsOptions) ([]Incident, *http.Respon
 	}
 
 	return incidents.Incidents, res, err
+}
+
+// ReassignOptions provides optional parameters to incident reassign
+type ReassignOptions struct {
+	RequesterID      string  `json:"requester_id,omitempty"`
+	EscalationPolicy string  `json:"escalation_policy,omitempty"`
+	EscalationLevel  int     `json:"escalation_level,omitempty"`
+	AssignedToUser   []*User `json:"assigned_to_user,omitempty"`
+}
+
+// Reassign an incident according to the options provided
+func (s *IncidentsService) Reassign(id string, opt *ReassignOptions) (*http.Response, error) {
+	if reflect.DeepEqual(new(ReassignOptions), opt) {
+		panic("Require at least one parameter for reassign operation")
+	}
+
+	res, err := s.client.Put("incidents/"+id+"/reassign", opt, nil)
+	if err != nil {
+		return res, err
+	}
+
+	return res, err
 }
