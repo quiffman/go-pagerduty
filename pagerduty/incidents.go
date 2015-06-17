@@ -54,10 +54,11 @@ func (s *IncidentsService) Get(id string) (*Incident, *http.Response, error) {
 
 // IncidentsOptions provides optional parameters to list requests
 type IncidentsOptions struct {
-	Status string `url:"status,omitempty"`
-	SortBy string `url:"sort_by,omitempty"`
-	Since  string `url:"since,omitempty"`
-	Until  string `url:"until,omitempty"`
+	Status         string `url:"status,omitempty"`
+	SortBy         string `url:"sort_by,omitempty"`
+	Since          string `url:"since,omitempty"`
+	Until          string `url:"until,omitempty"`
+	AssignedToUser string `url:"assigned_to_user,omitempty"`
 }
 
 // List returns a list of incidents
