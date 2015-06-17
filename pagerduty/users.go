@@ -31,7 +31,7 @@ type Users struct {
 
 // UsersOptions provides optional parameters to list requests
 type UsersOptions struct {
-	Query string `json:"query,omitempty"`
+	Query string `url:"query,omitempty"`
 }
 
 // List returns a list of users
