@@ -79,3 +79,21 @@ func (s *IncidentsService) List(opt *IncidentsOptions) (Incidents, *http.Respons
 
 	return incidents, res, err
 }
+
+// ReassignOptions provides optional parameters to incident reassign
+type ReassignOptions struct {
+	RequesterID      string `json:"requester_id,omitempty"`
+	EscalationPolicy string `json:"escalation_policy,omitempty"`
+	EscalationLevel  int    `json:"escalation_level,omitempty"`
+	AssignedToUser   string `json:"assigned_to_user,omitempty"`
+}
+
+// Reassign an incident according to the options provided
+func (s *IncidentsService) Reassign(id string, opt *ReassignOptions) (*http.Response, error) {
+	res, err := s.client.Put("incidents/"+id+"/reassign", opt, nil)
+	if err != nil {
+		return res, err
+	}
+
+	return res, err
+}
