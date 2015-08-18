@@ -63,6 +63,25 @@ type IncidentsOptions struct {
 	AssignedToUser string `url:"assigned_to_user,omitempty"`
 }
 
+// ListAll returns a list of incidents, by recursively calling List and utilising the pagination response
+func (s *IncidentsService) ListAll(opt *IncidentsOptions) ([]Incident, error) {
+	var incidents []Incident
+
+	i, _, e := s.List(opt)
+	if e == nil {
+		incidents = i.Incidents
+		opt.Pagination = i.Pagination
+		opt.Pagination.Offset += opt.Pagination.Limit
+
+		if opt.Pagination.Offset < opt.Pagination.Total {
+			if i, e := s.ListAll(opt); e == nil {
+				return append(incidents, i...), nil
+			}
+		}
+	}
+	return incidents, e
+}
+
 // List returns a list of incidents
 func (s *IncidentsService) List(opt *IncidentsOptions) (Incidents, *http.Response, error) {
 	var incidents Incidents
