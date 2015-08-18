@@ -27,6 +27,11 @@ type User struct {
 	Type 			string   `json:"type,omitempty"`
 }
 
+// The user response is a single User
+type UserResponse struct {
+	User *User
+}
+
 // Users is a list of users
 type Users struct {
 	Users []User
@@ -57,11 +62,11 @@ func (s *UsersService) List(opt *UsersOptions) ([]User, *http.Response, error) {
 func (s *UsersService) Get(id string) (*User, *http.Response, error) {
 	uri := fmt.Sprintf("users/%v", id)
 
-	user := new(User)
-	res, err := s.client.Get(uri, user)
+	userRes := new(UserResponse)
+	res, err := s.client.Get(uri, userRes)
 	if err != nil {
 		return nil, res, err
 	}
 
-	return user, res, err
+	return userRes.User, res, err
 }
