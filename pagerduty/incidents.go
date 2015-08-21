@@ -1,6 +1,7 @@
 package pagerduty
 
 import "net/http"
+import "time"
 
 // IncidentsService type
 type IncidentsService struct {
@@ -12,7 +13,7 @@ type Incident struct {
 	ID                    string            `json:"id,omitempty"`
 	IncidentNumber        int               `json:"incident_number,omitempty"`
 	Status                string            `json:"status,omitempty"`
-	CreatedOn             string            `json:"created_on,omitempty"`
+	CreatedOn             time.Time         `json:"created_on,omitempty"`
 	Summary               *IncidentSummary  `json:"trigger_summary_data,omitempty"`
 	User                  *User             `json:"assigned_to_user,omitempty"`
 	SService               *Service          `json:"service,omitempty"` // This is conflicting with the package name on assignment in test. Not sure of the soltuion
@@ -60,6 +61,8 @@ type IncidentsOptions struct {
 	SortBy         string `url:"sort_by,omitempty"`
 	Since          string `url:"since,omitempty"`
 	Until          string `url:"until,omitempty"`
+	DateRange      string `url:"date_range,omitempty"`
+	Service        string `url:"service,omitempty"`
 	AssignedToUser string `url:"assigned_to_user,omitempty"`
 }
 
